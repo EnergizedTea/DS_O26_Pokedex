@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react'
 import './App.css'
+import { PokemonCard } from './components/PokemonCard'
 
 function App() {
   const [pokemon, setPokemon] = useState(null)
@@ -10,10 +11,14 @@ function App() {
       .then(data => setPokemon(data))
   }, [])
 
+  console.log("render")
+
   return (
     <>
       <h1>Pokedex</h1>
-      <h3>{pokemon ? pokemon.name : "Cargando..."}</h3>
+      {/* <h3>{pokemon ? pokemon.name : "Cargando..."}</h3> */}
+      {pokemon ? <PokemonCard pokemon={pokemon} /> : "Cargando..."}
+      
     </>
   )
 }
