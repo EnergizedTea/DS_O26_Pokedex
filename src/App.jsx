@@ -23,9 +23,11 @@ function App() {
         }
 
         const data = await res.json()
+        console.log(data.results)
         const respuestas = await Promise.all(
           data.results.map(p => fetch(p.url))
         )
+        
         // Explicación: Aquí se hace un fetch a la API de Pokemon para obtener los datos de los primeros 5 pokemons. Luego, se hace un Promise.all para esperar a que todas las promesas de fetch se resuelvan y obtener los datos de cada pokemon.
 
         const datosPokemon = await Promise.all(
