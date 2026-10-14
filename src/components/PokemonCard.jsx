@@ -1,7 +1,8 @@
 import React from 'react'
 
-export const PokemonCard = ({ pokemon }) => {
+export const PokemonCard = ({ pokemon, onAgregar, onQuitar }) => {
     const image = pokemon.sprites.other['official-artwork'].front_default
+    
   return (
     <article className='tarjeta'>
         <img src={image} alt={pokemon.name} width="200"/>
@@ -12,6 +13,8 @@ export const PokemonCard = ({ pokemon }) => {
             ))}
         </ul>
         <p>Altura: {pokemon.height /10}m - Peso: {pokemon.weight / 10}kg</p>
+        {onAgregar && <button onClick={() => onAgregar(pokemon)}>Agregar</button>}
+        {onQuitar && <button onClick={() => onQuitar(pokemon)}>Quitar</button>}
     </article>
   )
 }
