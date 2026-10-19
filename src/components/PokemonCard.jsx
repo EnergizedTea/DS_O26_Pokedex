@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const PokemonCard = ({ pokemon, onAgregar, onQuitar }) => {
     const image = pokemon.sprites.other['official-artwork'].front_default
     
