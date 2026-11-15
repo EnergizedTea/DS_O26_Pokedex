@@ -1,10 +1,11 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import {
   registrar,
   iniciarSesion,
   escucharSesion,
   cerrarSesion,
 } from "./data/auth";
+import { guardarNota, cargarNotas } from "./data/notas";
 
 function LoginDemo() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ function LoginDemo() {
   const [revisando, setRevisando] = useState(true);
 
   const [texto, setTexto] = useState("");
-  const [notas, setNotas] = useState("");
+  const [notas, setNotas] = useState([]);
 
   useEffect(() => {
     if (!usuario) return;
@@ -45,7 +46,8 @@ function LoginDemo() {
 
   async function salir() {
     await cerrarSesion();
-    setnotas([]);
+    setNotas([]);
+    setTexto("");
   }
 
   async function entrar(e) {
