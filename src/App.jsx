@@ -102,14 +102,15 @@ function App() {
       {/* <h3>{pokemon ? pokemon.name : "Cargando..."}</h3> */}
       {cargando && <p>Cargando...</p>}
       {error && <p className="error">{error}</p>}
-
-      {pokemon &&
-        !cargando &&
-        !error &&
-        pokemon.map((p) => (
-          <PokemonCard key={p.name} pokemon={p} onAgregar={agregar} />
-        ))}
-      {/* Explicación: Aquí se muestra el componente PokemonCard solo si hay un pokemon cargado y no hay errores */}
+      <section className="pokemones">
+        {pokemon &&
+          !cargando &&
+          !error &&
+          pokemon.map((p) => (
+            <PokemonCard key={p.name} pokemon={p} onAgregar={agregar} />
+          ))}
+        {/* Explicación: Aquí se muestra el componente PokemonCard solo si hay un pokemon cargado y no hay errores */}
+      </section>
 
       <div className="paginacion">
         <button
