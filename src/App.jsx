@@ -6,7 +6,7 @@ import "./App.css";
 
 function App() {
   const [offset, setOffset] = useState(0);
-  const limit = 20;
+  const limit = 25;
   const [totalPokemon, setTotalPokemon] = useState(0);
 
   const [pokemon, setPokemon] = useState(null);
@@ -87,47 +87,115 @@ function App() {
 
   return (
     <>
-      <div className=""></div>
-      <header className="pokedex">
-        <h1>Pokedex</h1>
-      </header>
-
-      <section className="equipo">
-        <h2>Mi equipo ({equipo.length}/6)</h2>
-        {equipo.map((p) => (
-          <PokemonCard key={p.id} pokemon={p} />
-        ))}
-      </section>
-
-      {/* <h3>{pokemon ? pokemon.name : "Cargando..."}</h3> */}
-      {cargando && <p>Cargando...</p>}
-      {error && <p className="error">{error}</p>}
-      <section className="pokemones">
-        {pokemon &&
-          !cargando &&
-          !error &&
-          pokemon.map((p) => (
-            <PokemonCard key={p.name} pokemon={p} onAgregar={agregar} />
-          ))}
-        {/* Explicación: Aquí se muestra el componente PokemonCard solo si hay un pokemon cargado y no hay errores */}
-      </section>
-
-      <div className="paginacion">
-        <button
-          className="btn btn--paginacion"
-          onClick={anteriorPagina}
-          disabled={offset === 0 || cargando}
+      <div
+        className="
+          min-h-screen 
+          bg-neutral-800 
+          text-slate-500 
+          p-10"
+      >
+        <header
+          className="flex 
+          flex-col 
+          md:flex-row 
+          justify-between 
+          items-start 
+          md:items-center 
+          bg-neutral-600 
+          text-slate-100
+          p-6
+          rounded-2xl
+          shadow-lg
+          mb-8
+          gap-6
+          "
         >
-          Anterior
-        </button>
+          <h1 className="w-full md:flex-1 text-center text-4xl font-extrabold tracking-wide ">
+            Pokedex
+          </h1>
 
-        <button
-          className="btn btn--paginacion"
-          onClick={siguientePagina}
-          disabled={offset + limit >= totalPokemon || cargando}
-        >
-          Siguiente
-        </button>
+          <div className="flex flex-col w-full md:flex-1 text-center items-center justify-center gap-4 md:w-auto">
+            <section className="equipo">
+              <h2 className="text-lg font-semibold text-slate-30">
+                Mi equipo ({equipo.length}/6)
+              </h2>
+
+              <div className="flex gap-3 overflow-x-auto pb-2 max-w-full">
+                {equipo.length === 0 ? (
+                  <p className="text-sm text-slate-400 italic">
+                    No hay pokemóns en el equipo aún.
+                  </p>
+                ) : (
+                  equipo.map((p) => (
+                    <div
+                      key={p.id}
+                      className="bg-gray-100 p-2 rounded-lg flex flex-col items-center min-w-22.5"
+                    >
+                      <img
+                        src={
+                          p?.sprites?.other?.["official-artwork"]?.front_default
+                        }
+                        alt={p.name}
+                        className="w-16 h-16 object-contain"
+                      />
+                      <span className="text-xs font-bold capitalize truncate max-w-20">
+                        {p.name}
+                      </span>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                className="px-4 py-2 bg-gray-500 hover:bg-gray-700 disabled:bg-gray-600 disabled:text-slate-500 text-white font-bold rounded-lg transition-colors cursor-pointer text-sm"
+                onClick={anteriorPagina}
+                disabled={offset === 0 || cargando}
+              >
+                Anterior
+              </button>
+
+              <button
+                className="px-4 py-2 bg-gray-500 hover:bg-gray-700 disabled:bg-gray-600 disabled:text-slate-500 text-white font-bold rounded-lg transition-colors cursor-pointer text-sm"
+                onClick={siguientePagina}
+                disabled={offset + limit >= totalPokemon || cargando}
+              >
+                Siguiente
+              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* <h3>{pokemon ? pokemon.name : "Cargando..."}</h3> */}
+        {cargando && <p>Cargando...</p>}
+        {error && <p className="error">{error}</p>}
+        <section className="pokemones">
+          {pokemon &&
+            !cargando &&
+            !error &&
+            pokemon.map((p) => (
+              <PokemonCard key={p.name} pokemon={p} onAgregar={agregar} />
+            ))}
+          {/* Explicación: Aquí se muestra el componente PokemonCard solo si hay un pokemon cargado y no hay errores */}
+        </section>
+
+        <div className="paginacion">
+          <button
+            className="btn btn--paginacion"
+            onClick={anteriorPagina}
+            disabled={offset === 0 || cargando}
+          >
+            Anterior
+          </button>
+
+          <button
+            className="btn btn--paginacion"
+            onClick={siguientePagina}
+            disabled={offset + limit >= totalPokemon || cargando}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </>
   );
