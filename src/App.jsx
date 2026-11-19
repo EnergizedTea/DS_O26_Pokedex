@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "./firebase";
+import { Trash2 } from "lucide-react";
 import { PokemonCard } from "./components/PokemonCard";
 import "./App.css";
 
@@ -35,6 +42,15 @@ function App() {
       setEquipo([...equipo, p]);
     } catch (err) {
       setError("Error al agregar pokemon:", err);
+    }
+  }
+
+  async function quitar(p) {
+    try {
+      await deleteDoc(doc(db, "equipo", String(p.id)));
+      setEquipo((prev) => prev.filter((item) => item.id !== p.id));
+    } catch (err) {
+      setError("Error al quitar pokemon: " + err.message);
     }
   }
 
@@ -104,15 +120,22 @@ function App() {
           bg-neutral-600 
           text-slate-100
           p-6
-          rounded-2xl
+          rounded-tl-[100px] 
+          rounded-br-[100px] 
+          rounded-tr-none 
+          rounded-bl-none
           shadow-lg
           mb-8
           gap-6
           "
         >
-          <h1 className="w-full md:flex-1 text-center text-4xl font-extrabold tracking-wide ">
-            Pokedex
-          </h1>
+          <div className="w-full md:flex-1 flex items-center justify-center gap-4">
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-400 ring-4 ring-white/80 shadow-[0_0_15px_rgba(56,189,248,0.8)]" />
+
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-widest text-white drop-shadow-lg">
+              Pokédex
+            </h1>
+          </div>
 
           <div className="flex flex-col w-full md:flex-1 text-center items-center justify-center gap-4 md:w-auto">
             <section className="equipo">
@@ -129,18 +152,34 @@ function App() {
                   equipo.map((p) => (
                     <div
                       key={p.id}
-                      className="bg-gray-100 p-2 rounded-lg flex flex-col items-center min-w-22.5"
+                      onClick={() => quitar(p)}
+                      title="Clic para quitar del equipo"
+                      className="group relative overflow-hidden bg-gray-100 p-2 rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none flex flex-col items-center min-w-22.5 text-slate-500 cursor-pointer"
                     >
                       <img
                         src={
-                          p?.sprites?.other?.["official-artwork"]?.front_default
+                          p?.sprites?.other?.["official-artwork"]
+                            ?.front_default || p.img
                         }
-                        alt={p.name}
-                        className="w-16 h-16 object-contain"
+                        alt={p.name || p.nombre}
+                        className="w-16 h-16 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.50)]"
                       />
                       <span className="text-xs font-bold capitalize truncate max-w-20">
-                        {p.name}
+                        {p.name || p.nombre}
                       </span>
+                      <div
+                        className="
+                          absolute inset-0 
+                          bg-neutral-900/75 
+                          opacity-0 group-hover:opacity-100 
+                          transition-opacity duration-200 
+                          flex items-center justify-center
+                        "
+                      >
+                        <span className="text-xs font-bold text-gray-200 tracking-wide">
+                          <Trash2 className="w-6 h-6 text-gray-200 scale-90 group-hover:scale-100 transition-transform duration-200" />
+                        </span>
+                      </div>
                     </div>
                   ))
                 )}
@@ -169,7 +208,7 @@ function App() {
         {/* <h3>{pokemon ? pokemon.name : "Cargando..."}</h3> */}
         {cargando && <p>Cargando...</p>}
         {error && <p className="error">{error}</p>}
-        <section className="pokemones">
+        <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-items-center gap-6">
           {pokemon &&
             !cargando &&
             !error &&
@@ -177,25 +216,7 @@ function App() {
               <PokemonCard key={p.name} pokemon={p} onAgregar={agregar} />
             ))}
           {/* Explicación: Aquí se muestra el componente PokemonCard solo si hay un pokemon cargado y no hay errores */}
-        </section>
-
-        <div className="paginacion">
-          <button
-            className="btn btn--paginacion"
-            onClick={anteriorPagina}
-            disabled={offset === 0 || cargando}
-          >
-            Anterior
-          </button>
-
-          <button
-            className="btn btn--paginacion"
-            onClick={siguientePagina}
-            disabled={offset + limit >= totalPokemon || cargando}
-          >
-            Siguiente
-          </button>
-        </div>
+        </main>
       </div>
     </>
   );
