@@ -130,7 +130,7 @@ function App() {
           "
         >
           <div className="w-full md:flex-1 flex items-center justify-center gap-4">
-            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-400 ring-4 ring-white/80 shadow-[0_0_15px_rgba(56,189,248,0.8)]" />
+            <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-400 ring-4 ring-white/80 shadow-[0_0_15px_rgba(245, 73, 39,0.8)]" />
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase tracking-widest text-white drop-shadow-lg">
               Pokédex
